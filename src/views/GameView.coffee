@@ -15,5 +15,4 @@ class window.GameView extends Backbone.View
     @$el.html @template({winner:winner})
     @$('.dealer-hand-container').html new HandView(collection: @model.get 'dealerHand').el    
     @$('.player-hand-container').html new HandView(collection: @model.get 'playerHand').el
-    @$('.game-view-container').html 
-
+    

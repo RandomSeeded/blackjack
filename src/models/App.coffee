@@ -4,16 +4,16 @@ class window.App extends Backbone.Model
 
   defaults:
     points:50
+    betSize:1
 
   initialize: ->
     @makeGame()
 
   updatePoints: ->
-    console.log('updating points')
-    if @get('game').get('winner') == 'player' then @set('points',@get('points')+1) else @set('points',@get('points')-1)
+    if @get('game').get('winner') == 'player' then @set('points',@get('points')+@get('betSize')) else @set('points',@get('points')-@get('betSize'))
     console.log(@get('points'))
 
+    # ????
   makeGame: ->
-    debugger
     @set 'game', game = new Game(@attributes)
     @get('game').on 'change:winner', => @updatePoints()
