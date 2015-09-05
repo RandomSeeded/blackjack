@@ -5,8 +5,8 @@ class window.Hand extends Backbone.Collection
 
   hit: ->
     @add(@deck.pop())
-    @last()
     @trigger('hit')
+    @last()    
 
   #trigger stand event from app view invocation
   stand: ->
