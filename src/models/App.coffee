@@ -1,19 +1,19 @@
 # TODO: Refactor this model to use an internal Game Model instead
 # of containing the game logic directly.
 class window.App extends Backbone.Model
+
+  defaults:
+    points:50
+
   initialize: ->
-    @set 'deck', deck = new Deck()
-    # var deck = new Deck()
-    # this.set('deck', deck)
-    # this.get('deck')
-    @set 'playerHand', player = deck.dealPlayer()
-    @set 'dealerHand', dealer = deck.dealDealer()
+    @makeGame()
+
+  updatePoints: ->
+    console.log('updating points')
+    if @get('game').get('winner') == 'player' then @set('points',@get('points')+1) else @set('points',@get('points')-1)
+    console.log(@get('points'))
+
+  makeGame: ->
+    debugger
     @set 'game', game = new Game(@attributes)
-    # game.on 'gameOver', => @findWinner(player,dealer)
-
-  
-      # maxPlayer = (player.scores()[1] <= 21) ? player.scores()[1] : player.scores()[0]
-      # maxPlayer = player.scores()[0] if player.scores()[1] > 21
-      #otherwise maxPlayer = player.scores[1])
-
-
+    @get('game').on 'change:winner', => @updatePoints()

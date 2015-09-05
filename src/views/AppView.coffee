@@ -1,22 +1,27 @@
 class window.AppView extends Backbone.View
   template: _.template '
+    <div class="points">You have <%= points %> points</div>
     <button class="hit-button">Hit</button> <button class="stand-button">Stand</button>
-    <div class="player-hand-container"></div>
-    <div class="dealer-hand-container"></div>
     <div class="game-view-container"></div>
   '
 
   events:
-    'click .hit-button': -> @model.get('playerHand').hit()
-    'click .stand-button': -> @model.get('playerHand').stand()
+    'click .hit-button': -> @model.get('game').get('playerHand').hit()
+    'click .stand-button': -> @model.get('game').get('playerHand').stand()
+    'click .refresh-button': -> @render(0)
 
   initialize: ->
+    @model.on 'change:points', => @render(1)
     @render()
 
-  render: ->
+  render: (restart) ->
     @$el.children().detach()
-    @$el.html @template()
-    @$('.player-hand-container').html new HandView(collection: @model.get 'playerHand').el
-    @$('.dealer-hand-container').html new HandView(collection: @model.get 'dealerHand').el
+      
+    @$el.html @template(@model.attributes)
     @$('.game-view-container').html new GameView(model: @model.get 'game').el
+    if restart
+      @$el.find('.stand-button').after '<button class="refresh-button">Play again</button>'
+      @model.makeGame()
+    else
+      @$el.find('.refresh').remove()
 
